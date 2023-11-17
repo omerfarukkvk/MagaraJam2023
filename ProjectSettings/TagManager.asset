@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Collectable
   - StoneItem
+  - Enemy
   layers:
   - Default
   - TransparentFX

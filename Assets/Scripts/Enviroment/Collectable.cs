@@ -37,7 +37,7 @@ public class Collectable : MonoBehaviour
     {
         int random = Random.Range(1, 4);
         Vector3 pos = transform.position;
-        for (int i = 0; i < random; i++, pos.x += 0.1f)
+        for (int i = 1; i < random; i++, pos.x += 0.1f)
         {
             Instantiate(collectable, pos, Quaternion.identity);
         }
@@ -46,5 +46,21 @@ public class Collectable : MonoBehaviour
     void Die()
     {
         Destroy(gameObject);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            other.gameObject.GetComponent<PlayerMovement>().pickaxe.GetComponent<Pickaxe>().isMiningTrigger = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            other.gameObject.GetComponent<PlayerMovement>().pickaxe.GetComponent<Pickaxe>().isMiningTrigger = false;
+        }
     }
 }

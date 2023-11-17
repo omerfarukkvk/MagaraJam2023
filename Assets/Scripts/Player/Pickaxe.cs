@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class Pickaxe : MonoBehaviour
 {
-    private Transform pickaxePoint;
+    public Transform pickaxePoint;
     public float pickaxeRange = 0.5f; 
     public int pickaxeDamage = 2;
     public bool isMining = false;
+    public bool isMiningTrigger = false;
 
     void Awake()
     {
-        pickaxePoint = GetComponentInChildren<Transform>();
+        //pickaxePoint = GetComponentInChildren<Transform>();
     }
     void Update()
     {
+        Debug.Log("isMiningTrigger: " + isMiningTrigger);
         
     }
 
