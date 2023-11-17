@@ -6,11 +6,12 @@ public class Pickaxe : MonoBehaviour
 {
     private Transform pickaxePoint;
     public float pickaxeRange = 0.5f; 
+    public int pickaxeDamage = 2;
     public bool isMining = false;
 
-    void Start()
+    void Awake()
     {
-        pickaxePoint = GameObject.Find("PickaxePoint").GetComponent<Transform>();
+        pickaxePoint = GetComponentInChildren<Transform>();
     }
     void Update()
     {
@@ -23,7 +24,9 @@ public class Pickaxe : MonoBehaviour
         foreach (Collider2D collectable in hitCollectable)
         {
             if (collectable.tag == "Collectable")
-                collectable.GetComponent<Collectable>().TakeDamage(20);
+            {
+                collectable.GetComponent<Collectable>().TakeDamage(pickaxeDamage);
+            }
         }
     } 
 
@@ -37,7 +40,7 @@ public class Pickaxe : MonoBehaviour
     public IEnumerator MiningCooldown()
     {
         isMining = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.2f);
         isMining = false;
     }
 }

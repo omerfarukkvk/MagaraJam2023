@@ -14,7 +14,7 @@ public class CollectItem : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(inventory["StoneItem"]);
+        
     }
     void AddDictionaryInventory()
     {
