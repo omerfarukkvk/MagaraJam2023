@@ -35,7 +35,7 @@ public class Collectable : MonoBehaviour
 
     void DropItem()
     {
-        int random = Random.Range(0, 3);
+        int random = Random.Range(1, 4);
         Vector3 pos = transform.position;
         for (int i = 0; i < random; i++, pos.x += 0.1f)
         {

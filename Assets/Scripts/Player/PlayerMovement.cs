@@ -10,12 +10,19 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
     public Transform pickaxeTransform;
     public GameObject pickaxe;
+    public Transform pickaxePos;
     private bool isMoving = false;
+    private Coroutine miningCoroutine;
 
     void Awake()
     {
-        pickaxeTransform = transform.Find("Pickaxe");
+        pickaxePos = transform.Find("PickaxePos");
+        pickaxeTransform = transform.Find("PickaxePos/Pickaxe");
         pickaxe = pickaxeTransform.gameObject;
+    }
+
+    void Start()
+    {
     }
 
     void Update()
@@ -26,9 +33,20 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Speed", movement.sqrMagnitude);
 
+        if(movement.x != 0 || movement.y != 0)
+        {
+            isMoving = false;
+        }
+        
+        PickaxeAnimPos();
+
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            StartCoroutine(pickaxe.GetComponent<Pickaxe>().MiningCooldown());
+            if (miningCoroutine != null)
+            {
+                pickaxe.GetComponent<Pickaxe>().isMining = false;
+                StopCoroutine(miningCoroutine);
+            }
             pickaxe.SetActive(false);
         }
     }
@@ -41,19 +59,29 @@ public class PlayerMovement : MonoBehaviour
         }
         if (!isMoving && !pickaxe.GetComponent<Pickaxe>().isMining)
         {
-            isMoving = true;
             rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+            isMoving = true;
         }
-        else
+    }
+
+    void PickaxeAnimPos()
+    {
+        if (movement.x < 0)
         {
-            isMoving = false;
+            pickaxePos.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            pickaxePos.localScale = new Vector3(-1, 1, 1);
         }
-    } 
+        else if (movement.x > 0)
+        {
+            pickaxePos.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            pickaxePos.localScale = new Vector3(1, 1, 1);
+        }
+    }
 
     void Pickaxe()
     {
         pickaxe.SetActive(true);
-        StartCoroutine(pickaxe.GetComponent<Pickaxe>().MiningCooldown());
+        miningCoroutine = StartCoroutine(pickaxe.GetComponent<Pickaxe>().MiningCooldown());
         pickaxe.GetComponent<Pickaxe>().Mining();
     }
 }
